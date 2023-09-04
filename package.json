@@ -1,0 +1,27 @@
+{
+  "name": "tdb-logger-nestjs",
+  "version": "1.0.0",
+  "description": "TDB Logger NestJS",
+  "main": "lib/index.js",
+  "types": "lib",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "keywords": [
+    "logger", "nestjs"
+  ],
+  "author": "The Digital Bunch",
+  "license": "ISC",
+  "devDependencies": {
+    "@nestjs/common": "^10.2.4",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "prettier": "^3.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
