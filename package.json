@@ -8,10 +8,11 @@
     "build": "tsc -p ."
   },
   "keywords": [
-    "logger", "nestjs"
+    "logger",
+    "nestjs"
   ],
   "author": "The Digital Bunch",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@nestjs/common": "^10.2.4",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
