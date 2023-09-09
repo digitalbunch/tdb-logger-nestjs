@@ -7,12 +7,20 @@ import {
 } from '@nestjs/common';
 import { Logger } from 'tdb-logger';
 
-// instanceOf won't work
+// instanceOf won't work unless @nestjs/common is a peer dependency,
+// which is not achievable during development with npm link
 function isInstanceOf<T extends new (...args: any[]) => any>(
   payload: any,
-  classConstructor: T,
+  targetClass: T,
 ): payload is InstanceType<T> {
-  return payload?.constructor?.name === classConstructor.name;
+  let currentPrototype = Object.getPrototypeOf(payload);
+  while (currentPrototype) {
+    if (currentPrototype.constructor.name === targetClass.name) {
+      return true;
+    }
+    currentPrototype = Object.getPrototypeOf(currentPrototype);
+  }
+  return false;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -33,9 +41,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (status >= 500) {
       this.logger.error('Internal server error occurred:', exception);
     } else {
-      // console.log('About to throw');
-      // console.log(exception);
-      // console.log((exception as any).stack);
       this.logger.warn(
         'Global exception filter caught an exception:',
         exception,
