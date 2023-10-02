@@ -7,22 +7,6 @@ import {
 } from '@nestjs/common';
 import { Logger } from '@thedigitalbunch/logger';
 
-// instanceOf won't work unless @nestjs/common is a peer dependency,
-// which is not achievable during development with npm link
-function isInstanceOf<T extends new (...args: any[]) => any>(
-  payload: any,
-  targetClass: T,
-): payload is InstanceType<T> {
-  let currentPrototype = Object.getPrototypeOf(payload);
-  while (currentPrototype) {
-    if (currentPrototype.constructor.name === targetClass.name) {
-      return true;
-    }
-    currentPrototype = Object.getPrototypeOf(currentPrototype);
-  }
-  return false;
-}
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 @Catch()
@@ -33,9 +17,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
-    const status = isInstanceOf(exception, HttpException)
-      ? exception.getStatus()
-      : HttpStatus.INTERNAL_SERVER_ERROR;
+    const status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
 
     // We don't want to log 40x errors
     if (status >= 500) {
@@ -49,7 +34,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // Handle passing "errors" and other extra data to the client
     let extraValidationFields = {};
-    if (isInstanceOf(exception, UnprocessableEntityException)) {
+    if (exception instanceof UnprocessableEntityException) {
       if (typeof exception.getResponse() === 'object') {
         extraValidationFields = exception.getResponse();
       }
@@ -57,12 +42,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     response.status(status).json({
       ...extraValidationFields,
-      message: isInstanceOf(exception, HttpException)
-        ? exception.message
-        : 'Something went wrong, please try again later.',
-      statusCode: isInstanceOf(exception, HttpException)
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR,
+      message:
+        exception instanceof HttpException
+          ? exception.message
+          : 'Something went wrong, please try again later.',
+      statusCode:
+        exception instanceof HttpException
+          ? exception.getStatus()
+          : HttpStatus.INTERNAL_SERVER_ERROR,
     });
   }
 }
