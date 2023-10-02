@@ -1,12 +1,18 @@
 {
-  "name": "tdb-logger-nestjs",
-  "version": "1.0.0",
-  "description": "TDB Logger NestJS",
+  "name": "@thedigitalbunch/logger-nestjs",
+  "private": false,
+  "version": "1.0.1",
+  "description": "TDB Logger for NestJS applications",
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
     "build": "tsc -p ."
   },
+  "repository": "https://github.com/digitalbunch/tdb-logger-nestjs.git",
+  "files": [
+    "README.md",
+    "lib"
+  ],
   "keywords": [
     "logger",
     "nestjs"
@@ -14,7 +20,6 @@
   "author": "The Digital Bunch",
   "license": "MIT",
   "devDependencies": {
-    "@nestjs/common": "^10.2.4",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
@@ -24,5 +29,11 @@
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@thedigitalbunch/logger": "^1.0.1"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.2.4"
   }
 }

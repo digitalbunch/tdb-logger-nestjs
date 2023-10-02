@@ -5,7 +5,7 @@ import {
   HttpStatus,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { Logger } from 'tdb-logger';
+import { Logger } from '@thedigitalbunch/logger';
 
 // instanceOf won't work unless @nestjs/common is a peer dependency,
 // which is not achievable during development with npm link

@@ -1,5 +1,5 @@
 import type { ExceptionFilter, INestApplication } from '@nestjs/common';
-import { Logger, tracerMiddleware } from 'tdb-logger';
+import { Logger, tracerMiddleware } from '@thedigitalbunch/logger';
 
 import { AllExceptionsFilter } from './exception-filter';
 
