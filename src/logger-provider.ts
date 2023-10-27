@@ -1,11 +1,15 @@
 import type { ExceptionFilter, INestApplication } from '@nestjs/common';
+import type * as Sentry from '@sentry/node';
 import { Logger, tracerMiddleware } from '@thedigitalbunch/logger';
 
 import { AllExceptionsFilter } from './exception-filter';
 
 export const initializeLogger = (
   app: INestApplication,
-  options = {} as { exceptionFilter?: ExceptionFilter | null },
+  options = {} as {
+    exceptionFilter?: ExceptionFilter | null;
+    useSentry?: boolean | Sentry.SeverityLevel[];
+  },
 ): void => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -16,6 +20,12 @@ export const initializeLogger = (
       headerName: 'X-Request-Id-Header',
     }),
   );
+
+  if (options.useSentry) {
+    const levels: Sentry.SeverityLevel[] =
+      options.useSentry === true ? ['error', 'warning'] : options.useSentry;
+    Logger.useSentry({ levels });
+  }
 
   if (options.exceptionFilter) {
     app.useGlobalFilters(options.exceptionFilter);

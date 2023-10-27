@@ -20,7 +20,30 @@ const app = await NestFactory.create(AppModule, { bufferLogs: true });
 initializeLogger(app);
 ```
 
+##### Initialization options
+You can specify an exception filter for your NestJS application, by using `exceptionFilter` argument.
+This logger exports `AllExceptionsFilter` and uses it as a default, but any class that implements `ExceptionFilter` can be passed.
+You can also pass `null` to not use the exception filter at all.
+
+```typescript
+initializeLogger(app, { exceptionFilter: null });
+
+initializeLogger(app, { exceptionFilter: new AllExceptionsFilter() });
+```
+
+If your project uses Sentry, you can pass `useSentry: true` as an argument or specify the log levels that should be captured by Sentry.
+
+By default it captures `error` and `warning` logs.
+
+```typescript
+initializeLogger(app, { useSentry: true });
+
+initializeLogger(app, { useSentry: ['error', 'warning', 'debug'] });
+```
+
 ### Usage:
+
+In a development environment, use environmental variable `LOGGER=dev`.
 
 ```typescript
 import { Injectable } from '@nestjs/common';
